@@ -1,6 +1,7 @@
 package com.cleancode.videclub;
 
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,20 +17,14 @@ public class CustomerTest {
         c = new Customer();
     }
 
-    //    @Test
-//    public void RegularMovie_OneDay() throws Exception {
-//
-//        c.addRental("Regular Movie", 1); //peli + nro de dias.
-//        assertEquals(1.5, c.getRentalFee(), 0.001); //1.5 costo de alquiler,
-//        getRentalFee lo que obstieney y el 0,001 es el delta
-//        assertEquals(1, c.getRenterPoints());
-//    }
-//
-
-    private void assertFeeAndPoints(int fee, int points) {
-        assertEquals(fee, c.getRentalFee(), 0.001);
-        assertEquals(points, c.getRenterPoints());
+    @BeforeAll
+    public static void loadRegistry(){
+        VideoRegistry.addMovie("RegularMovie", VideoRegistry.VideoType.REGULAR);
+        VideoRegistry.addMovie("ChildrenMovie", VideoRegistry.VideoType.CHILDRENS);
     }
+
+
+
 
     @Test
     public void RegularMovie_OneDay() throws Exception {
@@ -53,5 +48,14 @@ public class CustomerTest {
         c.addRental("RegularMovie",4);
         assertFeeAndPoints(300,2);// primer dia: 1.5 cuarto dia: 1,5
         //1 punto por cada dia
+    }
+     @Test
+    public void ChildrensMovie_OneDay() throws  Exception{
+        c.addRental("ChildrenMovie",4);
+        assertFeeAndPoints(400,1);
+    }
+    private void assertFeeAndPoints(int fee, int points) {
+        assertEquals(fee, c.getRentalFee(), 0.001);
+        assertEquals(points, c.getRenterPoints());
     }
 }
